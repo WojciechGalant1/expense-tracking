@@ -4,7 +4,7 @@ A web application for tracking personal finances — income, expenses, and balan
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -192,3 +192,4 @@ Key settings in `application.properties`:
 | `POST` | `/transactions/{id}/delete` | Delete transaction |
 | `GET` | `/expenses` | Expense summary page |
 | `GET` | `/income` | Income summary page |
+
