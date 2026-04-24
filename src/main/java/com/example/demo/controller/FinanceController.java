@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -13,8 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dto.TransactionDTO;
 import com.example.demo.entity.Transaction;
+import com.example.demo.entity.User;
 import com.example.demo.exception.*;
 import com.example.demo.mapper.TransactionMapper;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.FinanceService;
 
 import jakarta.validation.Valid;
@@ -23,14 +26,21 @@ import jakarta.validation.Valid;
 public class FinanceController {
 
     private final FinanceService financeService;
+    private final UserRepository userRepository;
 
-    public FinanceController(FinanceService financeService) {
+    public FinanceController(FinanceService financeService, UserRepository userRepository) {
         this.financeService = financeService;
+        this.userRepository = userRepository;
+    }
+
+    private User getCurrentUser(Principal principal) {
+        if (principal == null) return null;
+        return userRepository.findByUsername(principal.getName()).orElse(null);
     }
 
     @GetMapping("/")
-    public String redirectToTransactions() {
-        return "redirect:/transactions";
+    public String homePage() {
+        return "index";
     }
 
     @GetMapping("/transactions")
@@ -63,12 +73,14 @@ public class FinanceController {
     @PostMapping("/transactions")
     public String saveTransaction(@Valid @ModelAttribute("transaction") TransactionDTO transactionDTO,
                                   BindingResult bindingResult,
-                                  RedirectAttributes redirectAttributes) {
+                                  RedirectAttributes redirectAttributes,
+                                  Principal principal) {
         if (bindingResult.hasErrors()) {
             return "create_transaction";
         }
         try {
             Transaction transaction = TransactionMapper.toEntity(transactionDTO);
+            transaction.setUser(getCurrentUser(principal));
             financeService.saveTransaction(transaction);
             redirectAttributes.addFlashAttribute("successMessage", "Transaction created successfully!");
             return "redirect:/transactions";

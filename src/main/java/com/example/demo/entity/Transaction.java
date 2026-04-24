@@ -2,12 +2,7 @@ package com.example.demo.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "transaction")
@@ -31,6 +26,10 @@ public class Transaction {
 	
 	@Column(name = "transaction_time", nullable = false)
 	private LocalDate transactionTime;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 	
 	public Transaction() {}
 	
@@ -85,9 +84,12 @@ public class Transaction {
 	public void setTransactionTime(LocalDate transactionTime) {
 		this.transactionTime = transactionTime;
 	}
-	
-	
-	
-	
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }

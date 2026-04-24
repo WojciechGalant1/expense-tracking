@@ -108,5 +108,53 @@ public class TransactionDTO {
                 ", transactionTime=" + transactionTime +
                 '}';
     }
+
+    /** Builder pattern for convenient TransactionDTO construction */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Long id;
+        private String productName;
+        private String categoryName;
+        private BigDecimal transactionAmount;
+        private String type;
+        private LocalDate transactionTime;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder productName(String productName) {
+            this.productName = productName;
+            return this;
+        }
+
+        public Builder categoryName(String categoryName) {
+            this.categoryName = categoryName;
+            return this;
+        }
+
+        public Builder transactionAmount(BigDecimal transactionAmount) {
+            this.transactionAmount = transactionAmount;
+            return this;
+        }
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder transactionTime(LocalDate transactionTime) {
+            this.transactionTime = transactionTime;
+            return this;
+        }
+
+        public TransactionDTO build() {
+            return new TransactionDTO(id, productName, categoryName, transactionAmount, type, transactionTime);
+        }
+    }
 }
 

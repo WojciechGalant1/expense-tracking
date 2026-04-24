@@ -1,18 +1,303 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance management system</title>
-	
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>Finance Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p.lead {
+            font-size: 1.2rem;
+            opacity: 0.85;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn-hero {
+            padding: 12px 32px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            color: white;
+        }
+
+        .btn-hero-primary:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        .btn-hero-outline {
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: white;
+            background: transparent;
+        }
+
+        .btn-hero-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .features-section {
+            padding: 60px 0;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h5 {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1a1a2e;
+        }
+
+        .feature-card p {
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .section-title p {
+            color: #6c757d;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .info-section {
+            background-color: #e9ecef;
+            padding: 50px 0;
+        }
+
+        .info-section h3 {
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 15px;
+        }
+
+        .info-section p {
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        .footer {
+            background-color: #1a1a2e;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 20px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
-<body>
-    index
 
-    
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">Finance management</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/transactions}">Transactions</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/transactions/new}">Add</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/income}">Income</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <span class="nav-link text-light">Logged in: <b sec:authentication="name"></b></span>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-outline-light btn-sm mt-1">Logout</button>
+                        </form>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link" th:href="@{/register}">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1>Finance Management System</h1>
+            <p class="lead">
+                Track your income and expenses, analyze spending patterns,
+                and take control of your personal finances.
+            </p>
+            <div sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}" class="btn btn-hero btn-hero-primary">Login</a>
+                <a th:href="@{/register}" class="btn btn-hero btn-hero-outline">Create account</a>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <a th:href="@{/transactions}" class="btn btn-hero btn-hero-primary">Go to transactions</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Key Features</h2>
+                <p>Everything you need to manage your finances effectively</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h5>Transaction Tracking</h5>
+                        <p>Record all your income and expense transactions with detailed categorization and date tracking.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h5>Financial Reports</h5>
+                        <p>View summaries by category and month. Understand where your money goes with percentage breakdowns.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h5>Secure Access</h5>
+                        <p>Your financial data is protected with user authentication. Only you can view and manage your transactions.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">💰</div>
+                        <h5>Balance Overview</h5>
+                        <p>See your current balance at a glance — the difference between total income and total expenses.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">🏷️</div>
+                        <h5>Category Management</h5>
+                        <p>Organize transactions into categories like Food, Bills, Transport, Payment, Investments and more.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">✏️</div>
+                        <h5>Full CRUD Operations</h5>
+                        <p>Create, view, edit and delete transactions easily. All data is validated for correctness.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="info-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h3>How it works</h3>
+                    <p>
+                        Register a free account and start tracking your finances immediately.
+                        Add transactions with a name, category, amount, type (income or expense),
+                        and date. The system automatically calculates your balance and generates
+                        detailed reports grouped by category and month.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h3>Built with modern technologies</h3>
+                    <p>
+                        This application is built using <strong>Spring Boot</strong> framework with
+                        <strong>Spring Security</strong> for authentication, <strong>Spring Data JPA</strong>
+                        for database access, <strong>Thymeleaf</strong> for server-side rendering,
+                        and <strong>Bootstrap 5</strong> for responsive design. All input data is validated
+                        both on the client side (JavaScript) and server side (Bean Validation).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="mb-0">&copy; 2026 Finance Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
 </body>
+
 </html>

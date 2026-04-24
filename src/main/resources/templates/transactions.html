@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <meta charset="UTF-8">
@@ -7,8 +9,6 @@
   <title>Finance management system</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Bootstrap Table scripts removed to prevent conflicts -->
-
 </head>
 
 <body>
@@ -20,7 +20,7 @@
       </button>
       <div class="collapse navbar-collapse" id="mynavbar">
         <ul class="navbar-nav me-auto">
-          <li class="nav-item">
+          <li class="nav-item" sec:authorize="isAuthenticated()">
             <a class="nav-link" th:href="@{/transactions/new}">Add</a>
           </li>
           <li class="nav-item">
@@ -28,6 +28,22 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" th:href="@{/income}">Income</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <span class="nav-link text-light">Logged in: <b sec:authentication="name"></b></span>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="POST" class="d-inline">
+              <button type="submit" class="btn btn-outline-light btn-sm mt-1">Logout</button>
+            </form>
+          </li>
+          <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <a class="nav-link" th:href="@{/login}">Login</a>
+          </li>
+          <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <a class="nav-link" th:href="@{/register}">Register</a>
           </li>
         </ul>
       </div>
@@ -39,10 +55,10 @@
       <h1>Transaction list</h1>
     </div>
     
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
     <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
     <table id="transactionTable" class="table table-bordered table-hover">
-      <!-- Table Header -->
       <thead class="table-dark">
         <tr>
           <th>Transaction name</th>
@@ -50,10 +66,9 @@
           <th>Amount</th>
           <th>Transaction type</th>
           <th>Transaction date</th>
-          <th>Actions</th>
+          <th sec:authorize="isAuthenticated()">Actions</th>
         </tr>
       </thead>
-      <!-- Table Body -->
       <tbody>
         <tr th:each="transaction: ${transactions}"
           th:class="${transaction.type != null and transaction.type == 'income'} ? 'table-success' : 'table-warning'">
@@ -62,7 +77,7 @@
           <td th:text="${transaction.transactionAmount}"></td>
           <td th:text="${transaction.type}"></td>
           <td th:text="${transaction.transactionTime}"></td>
-          <td class="mx-auto" style="width: 200px;">
+          <td class="mx-auto" style="width: 200px;" sec:authorize="isAuthenticated()">
             <form th:action="@{/transactions/{id}/delete(id=${transaction.id})}" method="POST" style="display: inline;" 
                   onsubmit="return confirm('Are you sure you want to delete this transaction?')">
               <button type="submit" class="btn btn-danger mb-1">Delete</button>
@@ -75,7 +90,7 @@
 
     <h1>Balance: <span th:text="${balance}"></span></h1>
 
-    <div class="row">
+    <div class="row" sec:authorize="isAuthenticated()">
       <div class="col-lg-3">
         <a th:href="@{/transactions/new}" class="btn btn-primary">Add transaction</a>
       </div>

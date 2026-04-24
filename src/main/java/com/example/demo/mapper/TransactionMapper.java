@@ -16,15 +16,14 @@ public class TransactionMapper {
             return null;
         }
         
-        TransactionDTO dto = new TransactionDTO();
-        dto.setId(transaction.getId());
-        dto.setProductName(transaction.getProductName());
-        dto.setCategoryName(transaction.getCategoryName());
-        dto.setTransactionAmount(transaction.getTransactionAmount());
-        dto.setType(transaction.getType());
-        dto.setTransactionTime(transaction.getTransactionTime());
-        
-        return dto;
+        return TransactionDTO.builder()
+                .id(transaction.getId())
+                .productName(transaction.getProductName())
+                .categoryName(transaction.getCategoryName())
+                .transactionAmount(transaction.getTransactionAmount())
+                .type(transaction.getType())
+                .transactionTime(transaction.getTransactionTime())
+                .build();
     }
     
     /**
