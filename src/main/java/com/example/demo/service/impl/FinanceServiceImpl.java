@@ -31,9 +31,7 @@ public class FinanceServiceImpl implements FinanceService {
         this.transactionRepository = transactionRepository;
     }
 
-    // ======================================================
     // ===============   UTILITY METHODS   ==================
-    // ======================================================
 
     /** Generic wrapper for database operations */
     private <T> T safeExecute(String message, Supplier<T> supplier) {
